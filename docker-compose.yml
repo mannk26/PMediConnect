@@ -1,0 +1,44 @@
+services:
+  service-discovery:
+    build: ./service-discovery
+    ports:
+      - "8761:8761"
+    networks:
+      - pm-network
+
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-discovery:8761/eureka/
+    depends_on:
+      - service-discovery
+    networks:
+      - pm-network
+
+  patient-service:
+    build: ./patient-service
+    ports:
+      - "8081:8081"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-discovery:8761/eureka/
+    depends_on:
+      - service-discovery
+    networks:
+      - pm-network
+
+  appointment-service:
+    build: ./appointment-service
+    ports:
+      - "8082:8082"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-discovery:8761/eureka/
+    depends_on:
+      - service-discovery
+    networks:
+      - pm-network
+
+networks:
+  pm-network:
+    driver: bridge
