@@ -26,7 +26,7 @@ public class Patient {
     private String lastName;
 
     @Email(message = "Invalid email format")
-    @NotBlank(message = "Email is required")
+    @NotBlank(message = "Email required")
     @Column(unique = true)
     private String email;
 
